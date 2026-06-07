@@ -5,61 +5,57 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Comparateur Borne</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <style>body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }</style>
 </head>
-<body class="bg-gray-50 min-h-screen flex flex-col justify-between antialiased">
-    <main class="flex-grow flex items-center justify-center px-4 py-8">
-        <div id="simulator-card" class="max-w-md w-full bg-white rounded-3xl shadow-xl p-8 border border-gray-100 transition-all">
-            <div class="w-full bg-gray-100 h-2 rounded-full mb-8 overflow-hidden">
-                <div id="progress-bar" class="bg-emerald-500 h-full w-1/4 rounded-full transition-all duration-500"></div>
-            </div>
-            <div id="step-1" class="step-content">
-                <h1 class="text-2xl font-extrabold text-slate-900 mb-2 text-center">Votre localisation</h1>
-                <label class="block text-slate-800 font-bold mb-3">Dans quel département habitez-vous ?</label>
-                <select id="input-dept" class="block w-full bg-slate-50 border border-slate-200 text-slate-800 font-semibold py-4 px-5 rounded-2xl mb-8">
-                    <option value="69">69 - Rhône</option>
-                    <option value="75">75 - Paris</option>
-                    <option value="13">13 - Bouches-du-Rhône</option>
-                </select>
-                <button onclick="nextStep(2)" class="w-full bg-emerald-500 text-white font-bold py-4 rounded-2xl">Continuer</button>
-            </div>
-            <div id="step-2" class="step-content hidden">
-                <h1 class="text-2xl font-extrabold text-slate-900 mb-2 text-center">Votre véhicule</h1>
-                <label class="block text-slate-800 font-bold mb-3">Marque :</label>
-                <select id="input-car" class="block w-full bg-slate-50 border border-slate-200 text-slate-800 font-semibold py-4 px-5 rounded-2xl mb-8">
-                    <option value="tesla">Tesla</option>
-                    <option value="renault">Renault</option>
-                </select>
-                <button onclick="nextStep(3)" class="w-full bg-emerald-500 text-white font-bold py-4 rounded-2xl">Continuer</button>
-            </div>
-            <div id="step-3" class="step-content hidden">
-                <h1 class="text-2xl font-extrabold text-slate-900 mb-2 text-center">Habitudes</h1>
-                <label class="block text-slate-800 font-bold mb-3">Km par jour :</label>
-                <select id="input-km" class="block w-full bg-slate-50 border border-slate-200 text-slate-800 font-semibold py-4 px-5 rounded-2xl mb-8">
-                    <option value="20">Moins de 30 km</option>
-                    <option value="50">Plus de 30 km</option>
-                </select>
-                <button onclick="calculerResultat()" class="w-full bg-emerald-500 text-white font-bold py-4 rounded-2xl">Voir résultat</button>
-            </div>
-            <div id="step-result" class="step-content hidden text-center">
-                <h1 class="text-2xl font-extrabold text-slate-900 mb-2">Simulation Terminée !</h1>
-                <p id="result-text" class="text-slate-700 font-medium my-6"></p>
-                <button onclick="location.reload()" class="w-full bg-slate-900 text-white font-bold py-4 rounded-2xl">Recommencer</button>
-            </div>
+<body class="bg-gray-50 min-h-screen flex items-center justify-center p-4">
+    <div id="card" class="max-w-md w-full bg-white rounded-3xl shadow-xl p-8 border border-gray-100">
+        
+        <div id="step-1" class="step">
+            <h1 class="text-2xl font-extrabold text-slate-900 mb-6 text-center">Votre localisation</h1>
+            <label class="block text-slate-800 font-bold mb-2">Code Postal :</label>
+            <input type="number" id="input-cp" placeholder="Ex: 69000" class="w-full bg-slate-50 border p-4 rounded-2xl mb-6">
+            <button onclick="nextStep(2)" class="w-full bg-emerald-500 text-white font-bold py-4 rounded-2xl">Continuer</button>
         </div>
-    </main>
+
+        <div id="step-2" class="step hidden">
+            <h1 class="text-2xl font-extrabold text-slate-900 mb-6 text-center">Votre véhicule</h1>
+            <label class="block text-slate-800 font-bold mb-2">Marque :</label>
+            <select id="input-car" class="w-full bg-slate-50 border p-4 rounded-2xl mb-6">
+                <option>Tesla</option><option>Renault</option><option>Peugeot</option><option>Volkswagen</option><option>Audi</option><option>BMW</option><option>Kia</option><option>Hyundai</option>
+            </select>
+            <button onclick="nextStep(3)" class="w-full bg-emerald-500 text-white font-bold py-4 rounded-2xl">Continuer</button>
+        </div>
+
+        <div id="step-3" class="step hidden">
+            <h1 class="text-2xl font-extrabold text-slate-900 mb-6 text-center">Type de Borne</h1>
+            <label class="block text-slate-800 font-bold mb-2">Puissance souhaitée :</label>
+            <select id="input-borne" class="w-full bg-slate-50 border p-4 rounded-2xl mb-6">
+                <option value="3.7 kW">3.7 kW (Standard)</option>
+                <option value="7.4 kW">7.4 kW (Rapide)</option>
+                <option value="11 kW">11 kW (Triphasé)</option>
+                <option value="22 kW">22 kW (Très rapide)</option>
+            </select>
+            <button onclick="showResult()" class="w-full bg-emerald-500 text-white font-bold py-4 rounded-2xl">Calculer</button>
+        </div>
+
+        <div id="result" class="step hidden text-center">
+            <h1 class="text-2xl font-extrabold text-slate-900 mb-4">Simulation réussie !</h1>
+            <p id="final-msg" class="text-slate-600 mb-6"></p>
+            <button onclick="location.reload()" class="w-full bg-slate-900 text-white font-bold py-4 rounded-2xl">Recommencer</button>
+        </div>
+    </div>
+
     <script>
-        function nextStep(step) {
-            document.querySelectorAll('.step-content').forEach(el => el.classList.add('hidden'));
-            document.getElementById('step-' + step).classList.remove('hidden');
-            document.getElementById('progress-bar').style.width = (step * 25) + '%';
+        function nextStep(s) {
+            document.querySelectorAll('.step').forEach(e => e.classList.add('hidden'));
+            document.getElementById('step-'+s).classList.remove('hidden');
         }
-        function calculerResultat() {
-            const dept = document.getElementById('input-dept').value;
-            const car = document.getElementById('input-car').value.toUpperCase();
-            document.querySelectorAll('.step-content').forEach(el => el.classList.add('hidden'));
-            document.getElementById('step-result').classList.remove('hidden');
-            document.getElementById('result-text').innerHTML = `Borne idéale pour votre <strong>${car}</strong> en département <strong>${dept}</strong> trouvée !`;
+        function showResult() {
+            const cp = document.getElementById('input-cp').value;
+            const car = document.getElementById('input-car').value;
+            const borne = document.getElementById('input-borne').value;
+            document.querySelectorAll('.step').forEach(e => e.classList.add('hidden'));
+            document.getElementById('result').classList.remove('hidden');
+            document.getElementById('final-msg').innerHTML = `Pour votre <strong>${car}</strong> située au <strong>${cp}</strong>, nous recommandons une borne <strong>${borne}</strong>.`;
         }
     </script>
 </body>
