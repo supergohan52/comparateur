@@ -1,57 +1,73 @@
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Comparateur Borne</title>
+    <title>Votre Borne de Recharge</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>
-<body class="bg-gray-50 min-h-screen p-4">
-    <div id="card" class="max-w-lg w-full bg-white rounded-3xl shadow-xl p-8 mx-auto">
-        
-        <div id="step-1" class="step">
-            <h1 class="text-2xl font-extrabold text-slate-900 mb-6 text-center">Votre projet</h1>
-            <label class="block text-slate-800 font-bold mb-2">Code Postal :</label>
-            <input type="number" id="input-cp" placeholder="Ex: 75000" class="w-full bg-slate-50 border p-4 rounded-2xl mb-6">
-            <button onclick="nextStep(2)" class="w-full bg-emerald-500 text-white font-bold py-4 rounded-2xl">Continuer</button>
-        </div>
+<body class="bg-slate-50 min-h-screen">
 
-        <div id="step-2" class="step hidden">
-            <h1 class="text-2xl font-extrabold text-slate-900 mb-6 text-center">Votre véhicule</h1>
-            <label class="block text-slate-800 font-bold mb-2">Marque :</label>
-            <select id="input-car" class="w-full bg-slate-50 border p-4 rounded-2xl mb-6">
-                <option>Tesla</option><option>Renault</option><option>Peugeot</option><option>Volkswagen</option><option>Audi</option><option>BMW</option><option>Mercedes</option><option>Kia</option><option>Hyundai</option><option>Fiat</option><option>Nissan</option><option>Volvo</option>
-            </select>
-            <button onclick="nextStep(3)" class="w-full bg-emerald-500 text-white font-bold py-4 rounded-2xl">Voir les options</button>
-        </div>
+    <header class="bg-white py-10 px-4 text-center border-b border-slate-100">
+        <h1 class="text-4xl font-extrabold text-emerald-600 mb-2">VBR</h1>
+        <p class="text-sm font-bold text-slate-500 uppercase tracking-widest mb-4">Votre Borne de Recharge</p>
+        <p class="text-lg text-slate-600 max-w-lg mx-auto">La recharge simplifiée. Obtenez votre estimation personnalisée en moins de 2 minutes.</p>
+    </header>
 
-        <div id="step-3" class="step hidden">
-            <h1 class="text-2xl font-extrabold text-slate-900 mb-4 text-center">Nos solutions</h1>
-            <table class="w-full text-left text-sm border-collapse mb-6">
-                <thead><tr class="bg-slate-100 text-slate-600"><th class="p-2">Modèle</th><th class="p-2">Puissance</th><th class="p-2">Prix</th></tr></thead>
-                <tbody>
-                    <tr class="border-b"><td class="p-2 font-semibold">Wallbox Pulsar</td><td class="p-2">7.4 kW</td><td class="p-2 font-bold text-emerald-600">1 200 €</td></tr>
-                    <tr class="border-b"><td class="p-2 font-semibold">Schneider EV</td><td class="p-2">7.4 kW</td><td class="p-2 font-bold text-emerald-600">1 400 €</td></tr>
-                    <tr class="border-b"><td class="p-2 font-semibold">Tesla Connector</td><td class="p-2">22 kW</td><td class="p-2 font-bold text-emerald-600">1 600 €</td></tr>
-                    <tr><td class="p-2 font-semibold">Hager Witty</td><td class="p-2">22 kW</td><td class="p-2 font-bold text-emerald-600">1 800 €</td></tr>
-                </tbody>
-            </table>
-            <select id="input-borne" class="w-full bg-slate-50 border p-4 rounded-2xl mb-6">
-                <option value="Wallbox Pulsar Max">Wallbox Pulsar Max</option>
-                <option value="Schneider EVlink">Schneider EVlink</option>
-                <option value="Tesla Wall Connector">Tesla Wall Connector</option>
-                <option value="Hager Witty">Hager Witty</option>
-            </select>
-            <button onclick="showResult()" class="w-full bg-emerald-500 text-white font-bold py-4 rounded-2xl">Valider mon choix</button>
+    <section class="max-w-4xl mx-auto py-8 grid grid-cols-1 md:grid-cols-3 gap-6 px-4">
+        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 text-center">
+            <h3 class="font-bold text-slate-900">⚡ Installation experte</h3>
         </div>
+        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 text-center">
+            <h3 class="font-bold text-slate-900">💰 Tarifs transparents</h3>
+        </div>
+        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 text-center">
+            <h3 class="font-bold text-slate-900">✅ Solution certifiée</h3>
+        </div>
+    </section>
 
-        <div id="result" class="step hidden text-center">
-            <h1 class="text-2xl font-extrabold text-slate-900 mb-4">Récapitulatif</h1>
-            <div id="final-msg" class="bg-slate-50 p-6 rounded-2xl mb-6 text-slate-700 leading-relaxed text-left"></div>
-            <a id="link-buy" href="#" target="_blank" class="block w-full bg-emerald-600 text-white font-bold py-4 rounded-2xl mb-3">Rechercher cette borne sur le web</a>
-            <button onclick="location.reload()" class="w-full bg-slate-900 text-white font-bold py-4 rounded-2xl">Recommencer</button>
+    <main class="px-4 pb-12">
+        <div id="card" class="max-w-lg w-full bg-white rounded-3xl shadow-xl p-8 mx-auto border border-slate-100">
+            
+            <div id="step-1" class="step">
+                <h2 class="text-xl font-bold mb-6 text-center">Code Postal</h2>
+                <input type="number" id="input-cp" placeholder="Ex: 75000" class="w-full bg-slate-50 border p-4 rounded-2xl mb-6">
+                <button onclick="nextStep(2)" class="w-full bg-emerald-500 text-white font-bold py-4 rounded-2xl">Continuer</button>
+            </div>
+
+            <div id="step-2" class="step hidden">
+                <h2 class="text-xl font-bold mb-6 text-center">Votre véhicule</h2>
+                <select id="input-car" class="w-full bg-slate-50 border p-4 rounded-2xl mb-6">
+                    <option>Tesla</option><option>Renault</option><option>Peugeot</option><option>Volkswagen</option><option>Audi</option><option>BMW</option>
+                </select>
+                <button onclick="nextStep(3)" class="w-full bg-emerald-500 text-white font-bold py-4 rounded-2xl">Voir les options</button>
+            </div>
+
+            <div id="step-3" class="step hidden">
+                <h2 class="text-xl font-bold mb-4 text-center">Choisissez votre borne</h2>
+                <table class="w-full text-sm border-collapse mb-6">
+                    <tr class="bg-slate-100"><th class="p-2">Modèle</th><th class="p-2">Prix</th></tr>
+                    <tr><td class="p-2">Wallbox Pulsar</td><td class="p-2 font-bold text-emerald-600">1 200 €</td></tr>
+                    <tr><td class="p-2">Schneider EV</td><td class="p-2 font-bold text-emerald-600">1 400 €</td></tr>
+                    <tr><td class="p-2">Tesla Connector</td><td class="p-2 font-bold text-emerald-600">1 600 €</td></tr>
+                </table>
+                <select id="input-borne" class="w-full bg-slate-50 border p-4 rounded-2xl mb-6">
+                    <option value="Wallbox Pulsar">Wallbox Pulsar (1 200 €)</option>
+                    <option value="Schneider EV">Schneider EV (1 400 €)</option>
+                    <option value="Tesla Connector">Tesla Connector (1 600 €)</option>
+                </select>
+                <button onclick="showResult()" class="w-full bg-emerald-500 text-white font-bold py-4 rounded-2xl">Valider</button>
+            </div>
+
+            <div id="result" class="step hidden text-center">
+                <h2 class="text-xl font-bold mb-4">Récapitulatif</h2>
+                <div id="final-msg" class="bg-slate-50 p-6 rounded-2xl mb-6 text-left"></div>
+                <a id="link-buy" href="#" target="_blank" class="block w-full bg-emerald-600 text-white font-bold py-4 rounded-2xl mb-3">Rechercher cette borne</a>
+                <button onclick="location.reload()" class="w-full bg-slate-900 text-white font-bold py-4 rounded-2xl">Recommencer</button>
+            </div>
         </div>
-    </div>
+    </main>
 
     <script>
         function nextStep(s) {
@@ -61,11 +77,10 @@
         function showResult() {
             const car = document.getElementById('input-car').value;
             const borne = document.getElementById('input-borne').value;
-            const link = "https://www.google.com/search?q=" + encodeURIComponent(borne + " prix achat");
-            
+            const link = "https://www.google.com/search?q=" + encodeURIComponent(borne + " prix achat installation");
             document.querySelectorAll('.step').forEach(e => e.classList.add('hidden'));
             document.getElementById('result').classList.remove('hidden');
-            document.getElementById('final-msg').innerHTML = `🚗 Véhicule : <strong>${car}</strong><br>⚡ Solution choisie : <strong>${borne}</strong><br><br>Cliquez sur le bouton ci-dessous pour trouver les meilleures offres en ligne.`;
+            document.getElementById('final-msg').innerHTML = `Véhicule : <strong>${car}</strong><br>Borne : <strong>${borne}</strong>`;
             document.getElementById('link-buy').href = link;
         }
     </script>
