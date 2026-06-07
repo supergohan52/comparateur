@@ -19,33 +19,29 @@
 
         <div id="step-2" class="step hidden">
             <h1 class="text-2xl font-extrabold text-slate-900 mb-6 text-center">Votre véhicule</h1>
-            <label class="block text-slate-800 font-bold mb-2">Sélectionnez la marque :</label>
+            <label class="block text-slate-800 font-bold mb-2">Marque :</label>
             <select id="input-car" class="w-full bg-slate-50 border p-4 rounded-2xl mb-6">
-                <option>Tesla</option><option>Renault</option><option>Peugeot</option><option>Volkswagen</option><option>Audi</option>
+                <option>Tesla</option><option>Renault</option><option>Peugeot</option><option>Volkswagen</option><option>Audi</option><option>BMW</option><option>Mercedes</option><option>Kia</option><option>Hyundai</option>
             </select>
-            <button onclick="showComparison()" class="w-full bg-emerald-500 text-white font-bold py-4 rounded-2xl">Voir les bornes disponibles</button>
+            <button onclick="nextStep(3)" class="w-full bg-emerald-500 text-white font-bold py-4 rounded-2xl">Continuer</button>
         </div>
 
-        <div id="result" class="step hidden">
-            <h1 class="text-2xl font-extrabold text-slate-900 mb-6 text-center">Choisissez votre borne</h1>
-            <div id="options-container" class="space-y-4">
-                <div class="border-2 border-emerald-500 p-4 rounded-2xl bg-emerald-50">
-                    <h3 class="font-bold text-lg">Borne Éco (3.7 kW)</h3>
-                    <p class="text-sm text-slate-600 mb-2">Idéal pour les petites recharges nocturnes.</p>
-                    <button class="w-full bg-emerald-600 text-white py-2 rounded-xl text-sm font-bold">Sélectionner</button>
-                </div>
-                <div class="border-2 border-slate-200 p-4 rounded-2xl">
-                    <h3 class="font-bold text-lg">Borne Standard (7.4 kW)</h3>
-                    <p class="text-sm text-slate-600 mb-2">Le meilleur rapport qualité/prix.</p>
-                    <button class="w-full bg-slate-800 text-white py-2 rounded-xl text-sm font-bold">Sélectionner</button>
-                </div>
-                <div class="border-2 border-slate-200 p-4 rounded-2xl">
-                    <h3 class="font-bold text-lg">Borne Premium (22 kW)</h3>
-                    <p class="text-sm text-slate-600 mb-2">Charge ultra-rapide pour gros rouleurs.</p>
-                    <button class="w-full bg-slate-800 text-white py-2 rounded-xl text-sm font-bold">Sélectionner</button>
-                </div>
-            </div>
-            <button onclick="location.reload()" class="w-full mt-6 text-slate-400 text-sm">Recommencer la simulation</button>
+        <div id="step-3" class="step hidden">
+            <h1 class="text-2xl font-extrabold text-slate-900 mb-6 text-center">Sélectionnez votre borne</h1>
+            <label class="block text-slate-800 font-bold mb-2">Choix du modèle :</label>
+            <select id="input-borne" class="w-full bg-slate-50 border p-4 rounded-2xl mb-6">
+                <option value="Wallbox Pulsar Max (Mono 7.4kW) - €€">Économique : Wallbox Pulsar Max (Mono 7.4kW)</option>
+                <option value="Schneider EVlink (Mono 7.4kW) - €€€">Standard : Schneider EVlink (Mono 7.4kW)</option>
+                <option value="Hager Witty (Triphasé 22kW) - €€€€">Performance : Hager Witty (Triphasé 22kW)</option>
+                <option value="Tesla Wall Connector (Triphasé 22kW) - €€€€">Premium : Tesla Wall Connector (Triphasé 22kW)</option>
+            </select>
+            <button onclick="showResult()" class="w-full bg-emerald-500 text-white font-bold py-4 rounded-2xl">Valider mon choix</button>
+        </div>
+
+        <div id="result" class="step hidden text-center">
+            <h1 class="text-2xl font-extrabold text-slate-900 mb-4">Récapitulatif</h1>
+            <div id="final-msg" class="bg-slate-50 p-6 rounded-2xl mb-6 text-slate-700 leading-relaxed text-left"></div>
+            <button onclick="location.reload()" class="w-full bg-slate-900 text-white font-bold py-4 rounded-2xl">Recommencer</button>
         </div>
     </div>
 
@@ -54,9 +50,13 @@
             document.querySelectorAll('.step').forEach(e => e.classList.add('hidden'));
             document.getElementById('step-'+s).classList.remove('hidden');
         }
-        function showComparison() {
+        function showResult() {
+            const cp = document.getElementById('input-cp').value;
+            const car = document.getElementById('input-car').value;
+            const borne = document.getElementById('input-borne').value;
             document.querySelectorAll('.step').forEach(e => e.classList.add('hidden'));
             document.getElementById('result').classList.remove('hidden');
+            document.getElementById('final-msg').innerHTML = `📍 Localisation : <strong>${cp}</strong><br>🚗 Véhicule : <strong>${car}</strong><br>⚡ Configuration : <strong>${borne}</strong><br><br>Un expert vous contactera pour valider cette installation à Lissieu.`;
         }
     </script>
 </body>
