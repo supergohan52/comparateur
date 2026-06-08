@@ -3,115 +3,60 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Votre Borne de Recharge - VBR</title>
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <title>VBR | Votre Borne de Recharge</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&display=swap" rel="stylesheet">
+    <style>body { font-family: 'Inter', sans-serif; }</style>
 </head>
-<body class="bg-slate-50 min-h-screen">
+<body class="bg-slate-50 min-h-screen text-slate-900">
 
-    <header class="bg-white py-12 px-4 text-center border-b border-slate-100">
-        <div class="mb-6 flex justify-center">
-            <svg width="150" height="80" viewBox="0 0 150 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M10 10L40 70M40 70L70 10" stroke="#10B981" stroke-width="8" stroke-linecap="round"/>
-                <path d="M40 70V50M35 55L45 45" stroke="#34D399" stroke-width="4" stroke-linecap="round"/>
-                <rect x="80" y="10" width="25" height="15" rx="3" fill="#64748B"/>
-                <rect x="80" y="30" width="25" height="15" rx="3" fill="#64748B"/>
-                <rect x="80" y="50" width="25" height="15" rx="3" fill="#64748B"/>
-                <rect x="110" y="10" width="15" height="15" rx="3" fill="#10B981"/>
-                <rect x="110" y="30" width="15" height="15" rx="3" fill="#10B981"/>
-                <path d="M130 10V70H140C145.523 70 150 65.5228 150 60V50H140L150 70" stroke="#64748B" stroke-width="6" stroke-linecap="round"/>
-            </svg>
+    <main class="flex flex-col items-center justify-center min-h-screen px-4">
+        <div class="text-center mb-10">
+            <h1 class="text-3xl font-extrabold text-emerald-600 tracking-tight">VBR</h1>
+            <p class="text-sm font-bold text-slate-500 uppercase tracking-widest mt-1">Votre Borne de Recharge</p>
         </div>
-        <h1 class="text-4xl md:text-5xl font-extrabold text-slate-900 mb-4">La recharge simplifiée.</h1>
-        <p class="text-lg text-slate-600 max-w-lg mx-auto">Obtenez votre estimation personnalisée et trouvez la borne idéale pour votre véhicule en moins de 2 minutes.</p>
-    </header>
 
-    <section class="max-w-4xl mx-auto py-8 grid grid-cols-1 md:grid-cols-3 gap-6 px-4">
-        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 text-center flex flex-col items-center">
-            <span class="text-3xl mb-3">⚡</span>
-            <h3 class="font-bold text-slate-900">Installation experte</h3>
-        </div>
-        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 text-center flex flex-col items-center">
-            <span class="text-3xl mb-3">💰</span>
-            <h3 class="font-bold text-slate-900">Tarifs transparents</h3>
-        </div>
-        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 text-center flex flex-col items-center">
-            <span class="text-3xl mb-3">✅</span>
-            <h3 class="font-bold text-slate-900">Solution certifiée</h3>
-        </div>
-    </section>
-
-    <main class="px-4 pb-12">
-        <div id="card" class="max-w-lg w-full bg-white rounded-3xl shadow-xl p-8 mx-auto border border-slate-100">
+        <div id="card" class="max-w-xl w-full bg-slate-900 rounded-[2.5rem] shadow-2xl p-10 text-white border border-slate-800">
             <div id="step-1" class="step">
-                <h2 class="text-2xl font-bold text-slate-900 mb-6 text-center">Commencer mon projet</h2>
-                <label class="block text-slate-800 font-bold mb-2">Code Postal</label>
-                <input type="number" id="input-cp" placeholder="Ex: 75000" class="w-full bg-slate-50 border p-4 rounded-2xl mb-6 font-bold text-lg">
-                <button onclick="nextStep(2)" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-4 rounded-2xl transition">Continuer</button>
+                <h2 class="text-2xl font-bold mb-8 text-center">Où habitez-vous ?</h2>
+                <input type="number" id="input-cp" placeholder="Code Postal (ex: 69380)" oninput="fetchCity(this.value)" class="w-full bg-white text-slate-900 p-5 rounded-2xl font-bold text-lg outline-none mb-4">
+                <select id="city-select" class="w-full bg-white text-slate-900 p-5 rounded-2xl font-bold text-lg mb-4 hidden outline-none"></select>
+                <button onclick="nextStep(2)" class="w-full bg-emerald-500 hover:bg-emerald-600 font-bold py-5 rounded-2xl transition-all">Continuer</button>
             </div>
-            <div id="step-2" class="step hidden">
-                <h2 class="text-2xl font-bold text-slate-900 mb-6 text-center">Votre véhicule</h2>
-                <label class="block text-slate-800 font-bold mb-2">Marque</label>
-                <select id="input-car" class="w-full bg-slate-50 border p-4 rounded-2xl mb-6 font-bold text-lg">
-                    <option>Tesla</option><option>Renault</option><option>Peugeot</option><option>Volkswagen</option><option>Audi</option><option>BMW</option>
+
+            <div id="step-2" class="step hidden text-center">
+                <h2 class="text-2xl font-bold mb-8">Marque de votre véhicule</h2>
+                <select id="car" class="w-full bg-white text-slate-900 p-5 rounded-2xl font-bold text-lg mb-6 outline-none">
+                    <option value="">Sélectionnez une marque...</option>
+                    <option>Tesla</option><option>Renault</option><option>Peugeot</option>
+                    <option>Volkswagen</option><option>Audi</option><option>BMW</option>
+                    <option>Hyundai</option><option>Kia</option><option>Volvo</option>
+                    <option>MG</option><option>Citroën</option><option>Autre</option>
                 </select>
-                <button onclick="nextStep(3)" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-4 rounded-2xl transition">Voir les options</button>
-            </div>
-            <div id="step-3" class="step hidden">
-                <h2 class="text-2xl font-bold text-slate-900 mb-4 text-center">Choisissez votre borne</h2>
-                <table class="w-full text-left text-sm border-collapse mb-6">
-                    <tr class="bg-slate-100 text-slate-600"><th class="p-3">Modèle</th><th class="p-3">Prix</th></tr>
-                    <tr class="border-b"><td class="p-3">Wallbox Pulsar</td><td class="p-3 font-bold text-emerald-600">1 200 €</td></tr>
-                    <tr class="border-b"><td class="p-3">Schneider EV</td><td class="p-3 font-bold text-emerald-600">1 400 €</td></tr>
-                    <tr><td class="p-3">Tesla Connector</td><td class="p-3 font-bold text-emerald-600">1 600 €</td></tr>
-                </table>
-                <label class="block text-slate-800 font-bold mb-2">Modèle retenu</label>
-                <select id="input-borne" class="w-full bg-slate-50 border p-4 rounded-2xl mb-6 font-bold text-lg">
-                    <option value="Wallbox Pulsar">Wallbox Pulsar</option>
-                    <option value="Schneider EV">Schneider EV</option>
-                    <option value="Tesla Wall Connector">Tesla Wall Connector</option>
-                </select>
-                <button onclick="showResult()" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-4 rounded-2xl transition">Valider</button>
-            </div>
-            <div id="result" class="step hidden text-center">
-                <h2 class="text-2xl font-bold text-slate-900 mb-4">Récapitulatif</h2>
-                <div id="final-msg" class="bg-slate-50 p-6 rounded-2xl mb-6 text-slate-700 leading-relaxed text-left font-bold text-lg"></div>
-                <a id="link-buy" href="#" target="_blank" class="block w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-4 rounded-2xl mb-3 transition">Rechercher cette borne</a>
-                <button onclick="location.reload()" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-4 rounded-2xl transition">Recommencer</button>
+                <button onclick="alert('Simulation terminée pour votre véhicule !')" class="w-full bg-emerald-500 hover:bg-emerald-600 font-bold py-5 rounded-2xl transition-all">Valider</button>
             </div>
         </div>
     </main>
 
-    <section class="max-w-4xl mx-auto py-12 px-4">
-        <h2 class="text-2xl font-bold text-slate-900 mb-6 text-center">Questions fréquentes</h2>
-        <div class="space-y-4">
-            <div class="bg-white p-6 rounded-2xl border border-slate-100">
-                <h4 class="font-bold text-slate-900 mb-2">Quel est le prix d'installation d'une borne ?</h4>
-                <p class="text-slate-600 text-sm">Le prix varie selon la puissance et la complexité du câblage. Nos estimations incluent le matériel et la pose par un expert certifié.</p>
-            </div>
-            <div class="bg-white p-6 rounded-2xl border border-slate-100">
-                <h4 class="font-bold text-slate-900 mb-2">Quelle borne choisir pour mon véhicule ?</h4>
-                <p class="text-slate-600 text-sm">Le choix dépend de la capacité de charge de votre voiture. Notre comparateur vous aide à sélectionner la puissance adaptée.</p>
-            </div>
-        </div>
-    </section>
-
-    <footer class="text-center py-6 border-t border-slate-100 text-slate-500 text-sm">
-        &copy; 2026 Votre Borne de Recharge - Tous droits réservés.
-    </footer>
-
     <script>
+        // Recherche automatique des villes
+        async function fetchCity(cp) {
+            const select = document.getElementById('city-select');
+            if (cp.length === 5) {
+                const res = await fetch(`https://geo.api.gouv.fr/communes?codePostal=${cp}`);
+                const data = await res.json();
+                if (data.length > 0) {
+                    select.innerHTML = '<option value="">Sélectionnez votre ville...</option>';
+                    data.forEach(c => select.innerHTML += `<option value="${c.nom}">${c.nom}</option>`);
+                    select.classList.remove('hidden');
+                }
+            } else { select.classList.add('hidden'); }
+        }
+
+        // Navigation entre étapes
         function nextStep(s) {
             document.querySelectorAll('.step').forEach(e => e.classList.add('hidden'));
-            document.getElementById('step-'+s).classList.remove('hidden');
-        }
-        function showResult() {
-            const car = document.getElementById('input-car').value;
-            const borne = document.getElementById('input-borne').value;
-            const link = "https://www.google.com/search?q=" + encodeURIComponent(borne + " prix achat installation");
-            document.querySelectorAll('.step').forEach(e => e.classList.add('hidden'));
-            document.getElementById('result').classList.remove('hidden');
-            document.getElementById('final-msg').innerHTML = `Véhicule : ${car}<br>Borne : ${borne}`;
-            document.getElementById('link-buy').href = link;
+            document.getElementById('step-' + s).classList.remove('hidden');
         }
     </script>
 </body>
