@@ -10,44 +10,39 @@
 </head>
 <body class="bg-slate-50 min-h-screen text-slate-900">
 
-    <main class="flex flex-col items-center justify-center min-h-screen px-4">
+    <main class="flex flex-col items-center justify-center min-h-screen px-4 py-10">
         <div class="text-center mb-10">
             <h1 class="text-3xl font-extrabold text-emerald-600 tracking-tight">VBR</h1>
             <p class="text-sm font-bold text-slate-500 uppercase tracking-widest mt-1">Votre Borne de Recharge</p>
         </div>
 
         <div id="card" class="max-w-xl w-full bg-slate-900 rounded-[2.5rem] shadow-2xl p-10 text-white border border-slate-800">
-            
             <div id="step-1" class="step">
                 <h2 class="text-2xl font-bold mb-8 text-center">Où habitez-vous ?</h2>
-                <input type="number" id="input-cp" placeholder="Code Postal (ex: 69380)" oninput="fetchCity(this.value)" class="w-full bg-white text-slate-900 p-5 rounded-2xl font-bold text-lg outline-none mb-4 focus:ring-4 ring-emerald-500/30">
-                <select id="city-select" class="w-full bg-white text-slate-900 p-5 rounded-2xl font-bold text-lg mb-4 hidden outline-none"></select>
+                <input type="number" id="input-cp" placeholder="Code Postal (ex: 69380)" oninput="fetchCity(this.value)" class="w-full bg-white text-slate-900 p-5 rounded-2xl font-bold text-lg mb-4">
+                <select id="city-select" class="w-full bg-white text-slate-900 p-5 rounded-2xl font-bold text-lg mb-4 hidden"></select>
                 <button onclick="nextStep(2)" class="w-full bg-emerald-500 hover:bg-emerald-600 font-bold py-5 rounded-2xl transition-all">Continuer</button>
             </div>
 
             <div id="step-2" class="step hidden text-center">
                 <h2 class="text-2xl font-bold mb-8">Marque de votre véhicule</h2>
-                <select id="car" class="w-full bg-white text-slate-900 p-5 rounded-2xl font-bold text-lg mb-6 outline-none">
+                <select id="car" class="w-full bg-white text-slate-900 p-5 rounded-2xl font-bold text-lg mb-6">
                     <option value="">Sélectionnez une marque...</option>
                     <option>Tesla</option><option>Renault</option><option>Peugeot</option>
-                    <option>Volkswagen</option><option>Audi</option><option>BMW</option>
-                    <option>Hyundai</option><option>Kia</option><option>Volvo</option>
-                    <option>MG</option><option>Citroën</option><option>Autre</option>
+                    <option>Volkswagen</option><option>Autre</option>
                 </select>
-                <button onclick="showResults()" class="w-full bg-emerald-500 hover:bg-emerald-600 font-bold py-5 rounded-2xl transition-all">Voir les bornes</button>
-                <button onclick="prevStep(1)" class="mt-4 text-slate-400 hover:text-white text-sm">Retour</button>
+                <button onclick="showResults()" class="w-full bg-emerald-500 hover:bg-emerald-600 font-bold py-5 rounded-2xl transition-all">Comparer les bornes</button>
             </div>
 
             <div id="step-3" class="step hidden">
-                <h2 class="text-2xl font-bold mb-6 text-center">Solutions recommandées</h2>
+                <h2 class="text-2xl font-bold mb-6 text-center">Sélection de bornes</h2>
                 <div id="results-list" class="space-y-4"></div>
-                <button onclick="location.reload()" class="w-full mt-8 bg-slate-700 py-3 rounded-xl text-sm text-slate-300 hover:text-white">Recommencer</button>
+                <button onclick="location.reload()" class="w-full mt-8 bg-slate-700 py-3 rounded-xl text-xs text-slate-400">Recommencer</button>
             </div>
         </div>
     </main>
 
     <script>
-        // Logique API Ville
         async function fetchCity(cp) {
             const select = document.getElementById('city-select');
             if (cp.length === 5) {
@@ -61,31 +56,26 @@
             } else { select.classList.add('hidden'); }
         }
 
-        // Navigation étapes
         function nextStep(s) {
             document.querySelectorAll('.step').forEach(e => e.classList.add('hidden'));
             document.getElementById('step-' + s).classList.remove('hidden');
         }
-        function prevStep(s) { nextStep(s); }
 
-        // Affichage comparatif
         function showResults() {
             nextStep(3);
-            const list = document.getElementById('results-list');
-            const offres = [
-                { nom: "Borne Standard 7kW", prix: "890€", desc: "Parfait pour maison individuelle" },
-                { nom: "Borne Rapide 22kW", prix: "1250€", desc: "Charge accélérée" }
+            const bornes = [
+                { nom: "Essentielle 7kW", prix: "690€", lien: "#" },
+                { nom: "Premium 11kW", prix: "990€", lien: "#" },
+                { nom: "Smart 22kW", prix: "1450€", lien: "#" }
             ];
-            list.innerHTML = offres.map(o => `
-                <div class="bg-slate-800 p-6 rounded-2xl border border-slate-700 flex justify-between items-center">
+            const list = document.getElementById('results-list');
+            list.innerHTML = bornes.map(b => `
+                <div class="bg-slate-800 p-5 rounded-2xl flex justify-between items-center border border-slate-700">
                     <div>
-                        <h3 class="font-bold text-lg">${o.nom}</h3>
-                        <p class="text-slate-400 text-xs mt-1">${o.desc}</p>
+                        <h3 class="font-bold">${b.nom}</h3>
+                        <p class="text-emerald-400 font-bold text-lg">${b.prix}</p>
                     </div>
-                    <div class="text-right">
-                        <p class="text-emerald-400 font-bold text-xl">${o.prix}</p>
-                        <button class="bg-emerald-600 px-4 py-2 rounded-xl text-xs font-bold mt-2">Choisir</button>
-                    </div>
+                    <a href="${b.lien}" class="bg-emerald-600 px-4 py-2 rounded-xl text-xs font-bold hover:bg-emerald-500 transition-all">Acheter</a>
                 </div>
             `).join('');
         }
