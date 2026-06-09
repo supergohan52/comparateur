@@ -4,80 +4,101 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VBR - Comparateur de Bornes</title>
+    <title>VBR - Comparateur</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        .neon-glow { text-shadow: 0 0 10px rgba(16, 185, 129, 0.5); }
-    </style>
 </head>
-<body class="bg-slate-950 text-slate-100 min-h-screen p-4 md:p-8">
+<body class="bg-slate-950 text-white min-h-screen p-6">
 
-    <div class="max-w-xl mx-auto">
-        <div class="text-center mb-10">
-            <h1 class="text-emerald-500 text-5xl font-black italic neon-glow">VBR</h1>
-            <p class="text-slate-400 text-sm mt-2 uppercase tracking-widest">Comparez. Économisez. Rechargez.</p>
+    <div class="max-w-md mx-auto">
+        <div class="text-center mb-8">
+            <h1 class="text-emerald-500 text-5xl font-black italic">VBR</h1>
         </div>
 
-        <div id="step-1" class="bg-slate-900 p-6 rounded-3xl border border-slate-800 shadow-xl">
-            <h2 class="text-xl font-bold mb-6 flex items-center gap-2"><span class="bg-emerald-500 text-slate-900 w-8 h-8 rounded-full flex items-center justify-center font-bold">1</span> Votre localisation</h2>
-            <input type="text" id="cp" placeholder="Code Postal (ex: 75000)" class="w-full p-4 rounded-xl bg-slate-950 border border-slate-700 mb-4 focus:border-emerald-500 outline-none transition-all">
-            <select id="ville" class="w-full p-4 rounded-xl bg-slate-950 border border-slate-700 mb-6 focus:border-emerald-500 outline-none">
-                <option>Sélectionnez votre ville...</option>
-                <option>Paris</option>
-                <option>Lyon</option>
-                <option>Marseille</option>
-                <option>Bordeaux</option>
-                <option>Autre ville</option>
+        <div id="step-1" class="step bg-slate-900 p-6 rounded-3xl border border-slate-700">
+            <h2 class="text-xl font-bold mb-4">Localisation</h2>
+            
+            <label class="block text-sm mb-2 text-slate-400">Département</label>
+            <select id="dept" onchange="updateCities()" class="w-full p-4 rounded-xl bg-slate-950 border border-slate-700 mb-4 outline-none focus:border-emerald-500">
+                <option value="">Choisissez un département...</option>
+                <option value="69">69 - Rhône</option>
+                <option value="75">75 - Paris</option>
+                <option value="13">13 - Bouches-du-Rhône</option>
             </select>
-            <button onclick="nextStep(2)" class="w-full bg-emerald-500 text-slate-950 p-4 rounded-xl font-black text-lg hover:bg-emerald-400 transition-all">Continuer</button>
+
+            <label class="block text-sm mb-2 text-slate-400">Ville</label>
+            <select id="ville" class="w-full p-4 rounded-xl bg-slate-950 border border-slate-700 mb-6 outline-none focus:border-emerald-500">
+                <option value="">Choisissez d'abord le département</option>
+            </select>
+
+            <button onclick="nextStep(2)" class="w-full bg-emerald-500 text-slate-900 p-4 rounded-xl font-bold hover:bg-emerald-400 transition-all">Continuer</button>
         </div>
 
-        <div id="step-2" class="step hidden bg-slate-900 p-6 rounded-3xl border border-slate-800 shadow-xl">
-            <h2 class="text-xl font-bold mb-6 flex items-center gap-2"><span class="bg-emerald-500 text-slate-950 w-8 h-8 rounded-full flex items-center justify-center font-bold">2</span> Votre véhicule</h2>
-            <select id="marque" class="w-full p-4 rounded-xl bg-slate-950 border border-slate-700 mb-6 text-white focus:border-emerald-500 outline-none">
-                <option>Tesla</option><option>Renault</option><option>Volkswagen</option><option>Peugeot</option>
-                <option>Kia</option><option>Hyundai</option><option>Audi</option><option>BMW</option>
-                <option>Mercedes</option><option>Fiat</option><option>Volvo</option><option>Cupra</option>
+        <div id="step-2" class="step hidden bg-slate-900 p-6 rounded-3xl border border-slate-700">
+            <h2 class="text-xl font-bold mb-4">Votre véhicule</h2>
+            <select id="marque" class="w-full p-4 rounded-xl bg-slate-950 border border-slate-700 mb-6 outline-none focus:border-emerald-500">
+                <option>Tesla</option>
+                <option>Renault</option>
+                <option>Volkswagen</option>
+                <option>Peugeot</option>
+                <option>Kia</option>
+                <option>Hyundai</option>
+                <option>Audi</option>
+                <option>BMW</option>
             </select>
-            <button onclick="showResults()" class="w-full bg-emerald-500 text-slate-950 p-4 rounded-xl font-black text-lg hover:bg-emerald-400 transition-all">Comparer les bornes</button>
+            <button onclick="showResults()" class="w-full bg-emerald-500 text-slate-900 p-4 rounded-xl font-bold hover:bg-emerald-400 transition-all">Comparer les bornes</button>
         </div>
 
         <div id="step-3" class="step hidden">
             <h2 class="text-2xl font-bold mb-6 text-center text-emerald-500">Bornes recommandées</h2>
             <div id="results-list" class="space-y-4"></div>
-            <button onclick="location.reload()" class="w-full mt-8 text-slate-400 text-sm hover:text-white underline">Recommencer</button>
         </div>
     </div>
 
     <script>
+        const citiesByDept = {
+            "69": ["Lyon", "Villeurbanne", "Bron", "Vénissieux"],
+            "75": ["Paris 1er", "Paris 10e", "Paris 16e", "Paris 20e"],
+            "13": ["Marseille", "Aix-en-Provence", "Cassis"]
+        };
+
+        function updateCities() {
+            const dept = document.getElementById('dept').value;
+            const villeSelect = document.getElementById('ville');
+            villeSelect.innerHTML = '<option value="">Choisissez votre ville</option>';
+            
+            if (citiesByDept[dept]) {
+                citiesByDept[dept].forEach(ville => {
+                    villeSelect.innerHTML += `<option value="${ville}">${ville}</option>`;
+                });
+            }
+        }
+
         function nextStep(s) {
-            document.querySelectorAll('.step, #step-1, #step-2, #step-3').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.step').forEach(step => step.classList.add('hidden'));
             document.getElementById('step-' + s).classList.remove('hidden');
         }
 
         function showResults() {
             nextStep(3);
             const lienAffiliation = "https://agv.bis-electric.com/?P5130A958B5C92131&redir=https%3A%2F%2Fwww.bis-electric.com%2F%23dc1e%2Fmobile-brand-categories%";
-
-            // Liste des bornes (prix en nombre pour le tri)
+            
             const bornes = [
                 { nom: "Wallbox Pulsar Plus", prix: 690, temps: "6h" },
-                { nom: "Schneider EVlink", prix: 1450, temps: "2h" },
-                { nom: "Hager Witty", prix: 990, temps: "4h" }
+                { nom: "Hager Witty", prix: 990, temps: "4h" },
+                { nom: "Schneider EVlink", prix: 1450, temps: "2h" }
             ];
-
-            // Tri par prix croissant
+            
+            // Tri automatique du moins cher au plus cher
             bornes.sort((a, b) => a.prix - b.prix);
             
             const list = document.getElementById('results-list');
-            list.innerHTML = bornes.map((b, index) => `
-                <div class="bg-slate-900 p-5 rounded-2xl border border-slate-700 flex justify-between items-center ${index === 0 ? 'border-emerald-500' : ''}">
+            list.innerHTML = bornes.map(b => `
+                <div class="bg-slate-900 p-5 rounded-2xl border border-slate-700 flex justify-between items-center">
                     <div>
-                        <h3 class="font-bold text-lg">${b.nom}</h3>
-                        <p class="text-sm text-slate-400">Charge : ${b.temps}</p>
-                        <p class="text-emerald-400 font-bold text-xl">${b.prix}€</p>
+                        <h3 class="font-bold">${b.nom}</h3>
+                        <p class="text-emerald-400 font-bold text-lg">${b.prix}€</p>
                     </div>
-                    <a href="${lienAffiliation}" target="_blank" class="bg-emerald-500 text-slate-900 px-6 py-3 rounded-xl font-bold hover:bg-emerald-400 transition-all">Acheter</a>
+                    <a href="${lienAffiliation}" target="_blank" class="bg-emerald-500 text-slate-900 px-4 py-2 rounded-xl text-xs font-bold hover:bg-emerald-400">Acheter</a>
                 </div>
             `).join('');
         }
