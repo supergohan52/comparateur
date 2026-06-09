@@ -1,14 +1,53 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comparateur Bornes</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-900 text-white p-6">
+
+    <div class="max-w-md mx-auto">
+        <div class="text-center mb-8">
+            <span class="text-emerald-500 text-4xl font-black italic">VBR</span>
+        </div>
+
+        <div id="step-1" class="step">
+            <h1 class="text-2xl font-bold mb-4">Quelle est votre voiture ?</h1>
+            <button onclick="nextStep(2)" class="w-full bg-emerald-600 p-4 rounded-xl font-bold hover:bg-emerald-500 mb-4 transition-all">Tesla Model 3</button>
+        </div>
+
+        <div id="step-2" class="step hidden">
+            <h1 class="text-2xl font-bold mb-4">Installation prévue ?</h1>
+            <button onclick="showResults()" class="w-full bg-emerald-600 p-4 rounded-xl font-bold hover:bg-emerald-500 transition-all">Maison individuelle</button>
+        </div>
+
+        <div id="step-3" class="step hidden">
+            <h1 class="text-2xl font-bold mb-4">Bornes recommandées</h1>
+            <div id="results-list" class="space-y-4"></div>
+        </div>
+    </div>
+
+    <script>
+        function nextStep(s) {
+            document.querySelectorAll('.step').forEach(step => step.classList.add('hidden'));
+            document.getElementById('step-' + s).classList.remove('hidden');
+        }
 
         // Affichage du comparatif
         function showResults() {
             nextStep(3);
-            const lienAffiliation = "https://agv.bis-electric.com/?P5130A958B5C92131&redir=https%3A%2F%2Fwww.bis-electric.com%2F%23dc1e%2Fmobile%2Fm%3Dand%26q%3Db";
             
+            // Lien d'affiliation mis à jour
+            const lienAffiliation = "https://agv.bis-electric.com/?P5130A958B5C92131&redir=https%3A%2F%2Fwww.bis-electric.com%2F%23dc1e%2Fmobile-brand-categories%";
+
             const bornes = [
                 { nom: "Wallbox Pulsar Plus", prix: "690€", temps: "6h", lien: lienAffiliation },
                 { nom: "Hager Witty", prix: "990€", temps: "4h", lien: lienAffiliation, best: true },
                 { nom: "Schneider EVlink", prix: "1450€", temps: "2h", lien: lienAffiliation }
             ];
+            
             const list = document.getElementById('results-list');
             list.innerHTML = bornes.map(b => `
                 <div class="bg-slate-800 p-5 rounded-2xl flex justify-between items-center border ${b.best ? 'border-emerald-500' : 'border-slate-700'} relative">
