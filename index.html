@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Comparateur Bornes de Recharge</title>
+    <title>Comparateur Bornes</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-slate-900 text-white p-6">
@@ -12,22 +12,14 @@
     <div class="max-w-md mx-auto">
         <div id="step-1" class="step">
             <h1 class="text-2xl font-bold mb-4">Localisation</h1>
-            <input type="text" id="cp" placeholder="Code postal (ex: 75000)" class="w-full p-4 rounded-xl bg-slate-800 border border-slate-700 mb-4 text-white">
-            <input type="text" id="ville" placeholder="Votre ville" class="w-full p-4 rounded-xl bg-slate-800 border border-slate-700 mb-4 text-white">
+            <input type="text" id="cp" placeholder="Code postal" class="w-full p-4 rounded-xl bg-slate-800 mb-2">
+            <input type="text" id="ville" placeholder="Ville" class="w-full p-4 rounded-xl bg-slate-800 mb-4">
             <button onclick="nextStep(2)" class="w-full bg-emerald-600 p-4 rounded-xl font-bold hover:bg-emerald-500">Continuer</button>
         </div>
 
         <div id="step-2" class="step hidden">
-            <h1 class="text-2xl font-bold mb-4">Votre véhicule</h1>
-            <select id="marque" class="w-full p-4 rounded-xl bg-slate-800 border border-slate-700 mb-4 text-white">
-                <option>Tesla</option>
-                <option>Renault</option>
-                <option>Volkswagen</option>
-                <option>Peugeot</option>
-                <option>Kia</option>
-            </select>
-            <input type="text" id="modele" placeholder="Modèle (ex: Model 3)" class="w-full p-4 rounded-xl bg-slate-800 border border-slate-700 mb-4 text-white">
-            <button onclick="showResults()" class="w-full bg-emerald-600 p-4 rounded-xl font-bold hover:bg-emerald-500">Comparer les bornes</button>
+            <h1 class="text-2xl font-bold mb-4">Quelle est votre voiture ?</h1>
+            <button onclick="nextStep(3)" class="w-full bg-emerald-600 p-4 rounded-xl font-bold hover:bg-emerald-500">Tesla Model 3</button>
         </div>
 
         <div id="step-3" class="step hidden">
@@ -44,9 +36,8 @@
 
         function showResults() {
             nextStep(3);
-            // Ton lien tracké Kwanko unique
             const lienAffiliation = "https://agv.bis-electric.com/?P5130A958B5C92131&redir=https%3A%2F%2Fwww.bis-electric.com%2F%23dc1e%2Fmobile%2Fm%3Dand%26q%3Db";
-
+            
             const bornes = [
                 { nom: "Wallbox Pulsar Plus", prix: "690€", temps: "6h" },
                 { nom: "Hager Witty", prix: "990€", temps: "4h", best: true },
@@ -66,6 +57,9 @@
                 </div>
             `).join('');
         }
+        
+        // J'ai mis à jour le bouton de l'étape 2 pour qu'il déclenche showResults() directement
+        document.querySelector('#step-2 button').onclick = showResults;
     </script>
 </body>
 </html>
