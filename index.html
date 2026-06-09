@@ -3,81 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VBR | Comparateur de Bornes</title>
+    <title>Comparateur Bornes de Recharge</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&display=swap" rel="stylesheet">
-    <style>body { font-family: 'Inter', sans-serif; }</style>
 </head>
-<body class="bg-slate-50 min-h-screen text-slate-900">
+<body class="bg-slate-900 text-white p-6">
 
-    <main class="flex flex-col items-center justify-center min-h-screen px-4 py-10">
-        <div class="text-center mb-10">
-            <h1 class="text-3xl font-extrabold text-emerald-600 tracking-tight">VBR</h1>
-            <p class="text-sm font-bold text-slate-500 uppercase tracking-widest mt-1">Obtenez votre devis en 30 secondes</p>
+    <div class="max-w-md mx-auto">
+        <div id="step-1" class="step">
+            <h1 class="text-2xl font-bold mb-4">Quelle est votre voiture ?</h1>
+            <button onclick="nextStep(2)" class="w-full bg-emerald-600 p-4 rounded-xl font-bold hover:bg-emerald-500">Tesla Model 3</button>
         </div>
 
-        <div id="card" class="max-w-xl w-full bg-slate-900 rounded-[2.5rem] shadow-2xl p-10 text-white border border-slate-800">
-            
-            <div id="step-1" class="step">
-                <h2 class="text-2xl font-bold mb-8 text-center">Où habitez-vous ?</h2>
-                <input type="number" id="input-cp" placeholder="Code Postal (ex: 69380)" oninput="fetchCity(this.value)" class="w-full bg-white text-slate-900 p-5 rounded-2xl font-bold text-lg mb-4 outline-none">
-                <select id="city-select" class="w-full bg-white text-slate-900 p-5 rounded-2xl font-bold text-lg mb-4 hidden outline-none"></select>
-                <button onclick="nextStep(2)" class="w-full bg-emerald-500 hover:bg-emerald-600 font-bold py-5 rounded-2xl transition-all">Continuer</button>
-            </div>
-
-            <div id="step-2" class="step hidden text-center">
-                <h2 class="text-2xl font-bold mb-8">Marque du véhicule</h2>
-                <select id="car" class="w-full bg-white text-slate-900 p-5 rounded-2xl font-bold text-lg mb-6 outline-none">
-                    <option value="">Sélectionnez une marque...</option>
-                    <option>Tesla</option><option>Renault</option><option>Peugeot</option>
-                    <option>Volkswagen</option><option>Autre</option>
-                </select>
-                <button onclick="showResults()" class="w-full bg-emerald-500 hover:bg-emerald-600 font-bold py-5 rounded-2xl transition-all">Voir les bornes</button>
-                <button onclick="nextStep(1)" class="mt-4 text-slate-500 hover:text-white text-sm">Retour</button>
-            </div>
-
-            <div id="step-3" class="step hidden">
-                <h2 class="text-2xl font-bold mb-6 text-center">Solutions recommandées</h2>
-                <div id="results-list" class="space-y-4"></div>
-                <button onclick="location.reload()" class="w-full mt-8 bg-slate-700 py-3 rounded-xl text-xs text-slate-400 hover:text-white">Recommencer</button>
-            </div>
+        <div id="step-2" class="step hidden">
+            <h1 class="text-2xl font-bold mb-4">Installation prévue ?</h1>
+            <button onclick="showResults()" class="w-full bg-emerald-600 p-4 rounded-xl font-bold hover:bg-emerald-500">Maison individuelle</button>
         </div>
 
-        <div class="mt-8 text-center text-slate-400 text-xs">
-            <p>Installation certifiée IRVE • 100% Gratuit • Service sans engagement</p>
+        <div id="step-3" class="step hidden">
+            <h1 class="text-2xl font-bold mb-4">Bornes recommandées</h1>
+            <div id="results-list" class="space-y-4"></div>
         </div>
-    </main>
+    </div>
 
     <script>
-        // Logique API Ville
-        async function fetchCity(cp) {
-            const select = document.getElementById('city-select');
-            if (cp.length === 5) {
-                const res = await fetch(`https://geo.api.gouv.fr/communes?codePostal=${cp}`);
-                const data = await res.json();
-                if (data.length > 0) {
-                    select.innerHTML = '<option value="">Sélectionnez votre ville...</option>';
-                    data.forEach(c => select.innerHTML += `<option value="${c.nom}">${c.nom}</option>`);
-                    select.classList.remove('hidden');
-                }
-            } else { select.classList.add('hidden'); }
-        }
-
-        // Navigation entre les étapes
+        // Fonction de navigation
         function nextStep(s) {
-            document.querySelectorAll('.step').forEach(e => e.classList.add('hidden'));
+            document.querySelectorAll('.step').forEach(step => step.classList.add('hidden'));
             document.getElementById('step-' + s).classList.remove('hidden');
         }
 
-        // Affichage du comparatif
+        // Affichage du comparatif avec ton lien d'affiliation
         function showResults() {
             nextStep(3);
+            
+            // Ton lien tracké unique Kwanko
+            const lienAffiliation = "https://agv.bis-electric.com/?P5130A958B5C92131&redir=https%3A%2F%2Fwww.bis-electric.com%2F%23dc1e%2Fmobile%2Fm%3Dand%26q%3Db";
+
             const bornes = [
-                { nom: "Wallbox Pulsar Plus", prix: "690€", temps: "6h", lien: "https://wallbox.com" },
-                { nom: "Hager Witty", prix: "990€", temps: "4h", lien: "https://hager.fr", best: true },
-                { nom: "Schneider EVlink", prix: "1450€", temps: "2h", lien: "https://se.com" }
+                { nom: "Wallbox Pulsar Plus", prix: "690€", temps: "6h" },
+                { nom: "Hager Witty", prix: "990€", temps: "4h", best: true },
+                { nom: "Schneider EVlink", prix: "1450€", temps: "2h" }
             ];
+            
             const list = document.getElementById('results-list');
+            
             list.innerHTML = bornes.map(b => `
                 <div class="bg-slate-800 p-5 rounded-2xl flex justify-between items-center border ${b.best ? 'border-emerald-500' : 'border-slate-700'} relative">
                     ${b.best ? '<span class="absolute -top-3 left-4 bg-emerald-500 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">Le plus populaire</span>' : ''}
@@ -86,7 +55,7 @@
                         <p class="text-[10px] text-slate-400">Charge complète : ${b.temps}</p>
                         <p class="text-emerald-400 font-bold text-lg mt-1">${b.prix}</p>
                     </div>
-                    <a href="${b.lien}" target="_blank" class="bg-emerald-600 px-4 py-2 rounded-xl text-xs font-bold hover:bg-emerald-500 transition-all">Acheter</a>
+                    <a href="${lienAffiliation}" target="_blank" class="bg-emerald-600 px-4 py-2 rounded-xl text-xs font-bold hover:bg-emerald-500 transition-all">Acheter</a>
                 </div>
             `).join('');
         }
